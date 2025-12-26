@@ -98,9 +98,16 @@ export async function GET(
       );
     }
 
-    const ip = request.headers.get('x-forwarded-for') ||
-               request.headers.get('x-real-ip') ||
-               'unknown';
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const realIp = request.headers.get('x-real-ip');
+
+    // 提取真实客户端IP（X-Forwarded-For中的第一个IP）
+    let ip = 'unknown';
+    if (forwardedFor) {
+      ip = forwardedFor.split(',')[0].trim();
+    } else if (realIp) {
+      ip = realIp;
+    }
 
     await prisma.scriptUsage.create({
       data: {
