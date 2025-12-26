@@ -137,7 +137,7 @@ iex (irm http://localhost:3000/api/run/<script-id>)
 
 ```bash
 # 下载并运行自动部署脚本
-curl -o deploy.sh https://raw.githubusercontent.com/YOUR_USERNAME/scripts-manager/main/deploy.sh
+curl -o deploy.sh https://raw.githubusercontent.com/xinhai-ai/scripts-manager/main/deploy.sh
 chmod +x deploy.sh
 sudo ./deploy.sh
 ```
@@ -146,7 +146,7 @@ sudo ./deploy.sh
 
 ```bash
 # 克隆仓库
-git clone https://github.com/YOUR_USERNAME/scripts-manager.git
+git clone https://github.com/xinhai-ai/scripts-manager.git
 cd scripts-manager
 
 # 配置环境变量

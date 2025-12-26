@@ -10,7 +10,7 @@
 
 ```bash
 # 下载部署脚本
-curl -o deploy.sh https://raw.githubusercontent.com/YOUR_USERNAME/scripts-manager/main/deploy.sh
+curl -o deploy.sh https://raw.githubusercontent.com/xinhai-ai/scripts-manager/main/deploy.sh
 
 # 添加执行权限
 chmod +x deploy.sh
@@ -55,7 +55,7 @@ chmod +x /usr/local/bin/docker-compose
 
 ```bash
 cd /opt
-git clone https://github.com/YOUR_USERNAME/scripts-manager.git
+git clone https://github.com/xinhai-ai/scripts-manager.git
 cd scripts-manager
 ```
 
@@ -211,4 +211,4 @@ find $BACKUP_DIR -name "uploads.*.tar.gz" -mtime +30 -delete
 
 如有问题，请查看：
 - 日志: `docker-compose logs -f`
-- GitHub Issues: https://github.com/YOUR_USERNAME/scripts-manager/issues
+- GitHub Issues: https://github.com/xinhai-ai/scripts-manager/issues
