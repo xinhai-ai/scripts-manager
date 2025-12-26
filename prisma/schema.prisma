@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  scripts   Script[]
+}
+
+model Script {
+  id                     String        @id @default(uuid())
+  name                   String
+  description            String?
+  content                String
+  categoryId             String?
+  category               Category?     @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  requireAdmin           Boolean       @default(false)
+  bypassExecutionPolicy  Boolean       @default(true)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  usages                 ScriptUsage[]
+}
+
+model ScriptUsage {
+  id        String   @id @default(uuid())
+  scriptId  String
+  script    Script   @relation(fields: [scriptId], references: [id], onDelete: Cascade)
+  timestamp DateTime @default(now())
+  ip        String?
+}
+
+model UploadedFile {
+  id          String   @id @default(uuid())
+  filename    String
+  originalName String
+  mimeType    String
+  size        Int
+  createdAt   DateTime @default(now())
+}
