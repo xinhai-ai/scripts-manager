@@ -18,7 +18,6 @@ services:
     volumes:
       - ./data:/app/data
       - ./uploads:/app/public/uploads
-    command: sh -c "./node_modules/.bin/prisma migrate deploy && node server.js"
 
 volumes:
   data:

@@ -46,7 +46,10 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder /app/node_modules/.bin ./node_modules/.bin
+
+# 复制启动脚本
+COPY docker-start.sh ./docker-start.sh
+RUN chmod +x ./docker-start.sh
 
 # 创建数据目录
 RUN mkdir -p /app/data /app/public/uploads
@@ -59,5 +62,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# 启动命令
-CMD ["node", "server.js"]
+# 使用启动脚本
+CMD ["./docker-start.sh"]
