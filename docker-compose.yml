@@ -18,7 +18,7 @@ services:
     volumes:
       - ./data:/app/data
       - ./uploads:/app/public/uploads
-    command: sh -c "npx prisma migrate deploy && node server.js"
+    command: sh -c "./node_modules/.bin/prisma migrate deploy && node server.js"
 
 volumes:
   data:

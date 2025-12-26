@@ -43,13 +43,17 @@ echo "创建项目目录: $PROJECT_DIR"
 mkdir -p $PROJECT_DIR
 cd $PROJECT_DIR
 
-# 克隆仓库（如果还没有）
+# 克隆或更新仓库
 if [ ! -d ".git" ]; then
     echo "请输入 Git 仓库地址:"
     read GIT_REPO
     git clone $GIT_REPO .
 else
-    echo "Git 仓库已存在，跳过克隆"
+    echo "Git 仓库已存在，同步最新代码..."
+    git fetch origin
+    git reset --hard origin/main
+    git pull origin main
+    echo "代码同步完成"
 fi
 
 # 创建 .env 文件
@@ -88,10 +92,25 @@ fi
 mkdir -p data uploads
 chmod -R 755 data uploads
 
+# 停止旧容器
+echo ""
+echo "停止旧容器（如果存在）..."
+docker-compose down || true
+
+# 清理 Docker 构建缓存（确保使用最新代码）
+echo ""
+echo "清理 Docker 构建缓存..."
+docker builder prune -af || true
+
 # 构建并启动容器
 echo ""
 echo "构建并启动容器..."
-docker-compose up -d --build
+docker-compose up -d --build --no-cache
+
+# 清理旧镜像
+echo ""
+echo "清理旧的 Docker 镜像..."
+docker image prune -af || true
 
 echo ""
 echo "=========================================="
@@ -105,5 +124,5 @@ echo "有用的命令:"
 echo "  查看日志: docker-compose logs -f"
 echo "  重启服务: docker-compose restart"
 echo "  停止服务: docker-compose down"
-echo "  更新代码: git pull && docker-compose up -d --build"
+echo "  更新代码: cd /opt/scripts-manager && git pull && docker-compose up -d --build --no-cache"
 echo ""
