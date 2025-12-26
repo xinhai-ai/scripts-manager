@@ -45,9 +45,7 @@ export async function GET(
       return a.name.localeCompare(b.name);
     });
 
-    const origin = request.headers.get('host') || 'localhost:3000';
-    const protocol = request.headers.get('x-forwarded-proto') || 'http';
-    const baseUrl = `${protocol}://${origin}`;
+    const baseUrl = process.env.APP_URL || `${request.headers.get('x-forwarded-proto') || 'http'}://${request.headers.get('host') || 'localhost:3000'}`;
 
     // 分离未分类和有分类的脚本
     const uncategorizedScripts = sortedScripts.filter(script => !script.category);

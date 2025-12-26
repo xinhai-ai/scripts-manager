@@ -36,12 +36,26 @@ export default function AdminPage() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [editingCategory, setEditingCategory] = useState<{ id: string; name: string } | null>(null);
   const [categoryError, setCategoryError] = useState('');
+  const [appUrl, setAppUrl] = useState('http://localhost:3000');
   const { t } = useLanguage();
 
   useEffect(() => {
+    loadAppUrl();
     loadScripts();
     loadCategories();
   }, []);
+
+  const loadAppUrl = async () => {
+    try {
+      const response = await fetch('/api/config');
+      if (response.ok) {
+        const data = await response.json();
+        setAppUrl(data.appUrl);
+      }
+    } catch (error) {
+      console.error('Error loading app URL:', error);
+    }
+  };
 
   const loadScripts = async () => {
     try {
@@ -86,13 +100,13 @@ export default function AdminPage() {
   };
 
   const copyRunCommand = (id: string) => {
-    const command = `iex (irm ${window.location.origin}/api/run/${id})`;
+    const command = `iex (irm ${appUrl}/api/run/${id})`;
     navigator.clipboard.writeText(command);
     alert('Command copied to clipboard!');
   };
 
   const copyMenuCommand = () => {
-    const command = `iex (irm ${window.location.origin}/s)`;
+    const command = `iex (irm ${appUrl}/s)`;
     navigator.clipboard.writeText(command);
     alert('Command copied to clipboard!');
   };
@@ -253,7 +267,7 @@ export default function AdminPage() {
                   {t('quickAccessDesc')}
                 </p>
                 <code className="mt-2 block bg-white px-3 py-2 rounded border border-blue-200 text-sm font-mono text-gray-900">
-                  iex (irm {window.location.origin}/s)
+                  iex (irm {appUrl}/s)
                 </code>
               </div>
               <button

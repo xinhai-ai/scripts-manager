@@ -35,11 +35,14 @@ export const translations = {
     bypassExecutionPolicy: 'Bypass Execution Policy (Recommended)',
     bypassExecutionPolicyDesc: 'Automatically bypass PowerShell execution policy restrictions',
     requireAdmin: 'Require Administrator Rights',
-    requireAdminDesc: 'Auto-prompt for admin privileges if not already elevated',
+    requireAdminDesc: 'Automatically request admin privileges if not already elevated',
     availableHelpers: 'Available Helper Functions',
     helperDownload: 'Download a file from URL:',
     helperDownloadExample: 'Download-File -Url "https://example.com/file.zip" -OutputPath "C:\\file.zip"',
     helperDownloadFromFiles: 'Download from uploaded files (use Copy URL from Files page):',
+    helperDomainConstant: 'Domain constant (automatically available in your script):',
+    helperDomainExample: '$domain = "{domain}"',
+    helperDomainUsage: 'Example usage: Download-File -Url "$domain/api/files/FILE_ID" -OutputPath "C:\\myfile.exe"',
 
     // Quick command templates
     quickCommands: 'Quick Commands',
@@ -172,11 +175,14 @@ export const translations = {
     bypassExecutionPolicy: '绕过执行策略（推荐）',
     bypassExecutionPolicyDesc: '自动绕过 PowerShell 执行策略限制',
     requireAdmin: '需要管理员权限',
-    requireAdminDesc: '如果未提升权限，自动提示管理员权限',
+    requireAdminDesc: '自动请求管理员权限（如果未提升权限）',
     availableHelpers: '可用的辅助函数',
     helperDownload: '从 URL 下载文件：',
     helperDownloadExample: 'Download-File -Url "https://example.com/file.zip" -OutputPath "C:\\file.zip"',
     helperDownloadFromFiles: '从已上传的文件下载（使用文件页面的复制 URL）：',
+    helperDomainConstant: '域名常量（在脚本中自动可用）：',
+    helperDomainExample: '$domain = "{domain}"',
+    helperDomainUsage: '使用示例：Download-File -Url "$domain/api/files/FILE_ID" -OutputPath "C:\\myfile.exe"',
 
     // 快捷命令模板
     quickCommands: '快捷命令',

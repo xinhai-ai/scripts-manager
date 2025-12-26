@@ -5,7 +5,7 @@ function generateScriptWrapper(script: {
   content: string;
   requireAdmin: boolean;
   bypassExecutionPolicy: boolean;
-}) {
+}, baseUrl: string, scriptId: string) {
   let finalScript = '';
 
   // 添加执行策略绕过
@@ -16,19 +16,30 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 `;
   }
 
-  // 添加管理员权限检查和提权
+  // 添加管理员权限检查和自动提权
   if (script.requireAdmin) {
-    finalScript += `# Check Admin Rights
+    finalScript += `# Check and Request Admin Rights
 if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host ""
-    Write-Host "========================================" -ForegroundColor Red
-    Write-Host "  Administrator Rights Required" -ForegroundColor Red
-    Write-Host "========================================" -ForegroundColor Red
+    Write-Host "========================================" -ForegroundColor Yellow
+    Write-Host "  Requesting Administrator Rights" -ForegroundColor Yellow
+    Write-Host "========================================" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "This script requires administrator privileges." -ForegroundColor Yellow
-    Write-Host "Please run your PowerShell as Administrator and try again." -ForegroundColor Yellow
+    Write-Host "This script requires administrator privileges." -ForegroundColor Cyan
+    Write-Host "Restarting with elevated permissions..." -ForegroundColor Cyan
     Write-Host ""
-    return
+    \$scriptUrl = "${baseUrl}/api/run/${scriptId}"
+    \$command = "iex (irm \$scriptUrl)"
+
+    try {
+        Start-Process powershell -Verb RunAs -ArgumentList "-NoExit", "-Command", \$command
+        return
+    } catch {
+        Write-Host "Failed to request administrator rights: \$_" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "Please manually run PowerShell as Administrator and try again." -ForegroundColor Yellow
+        return
+    }
 }
 
 Write-Host "Running with administrator privileges" -ForegroundColor Green
@@ -36,6 +47,12 @@ Write-Host ""
 
 `;
   }
+
+  // 添加域名常量
+  finalScript += `# Domain Configuration
+\$domain = "${baseUrl}"
+
+`;
 
   // 添加辅助函数
   finalScript += `# Helper Functions
@@ -92,7 +109,8 @@ export async function GET(
       },
     });
 
-    const finalScript = generateScriptWrapper(script);
+    const baseUrl = process.env.APP_URL || `${request.headers.get('x-forwarded-proto') || 'http'}://${request.headers.get('host') || 'localhost:3000'}`;
+    const finalScript = generateScriptWrapper(script, baseUrl, id);
 
     return new NextResponse(finalScript, {
       headers: {

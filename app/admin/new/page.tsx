@@ -20,12 +20,26 @@ export default function NewScriptPage() {
   const [bypassExecutionPolicy, setBypassExecutionPolicy] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [appUrl, setAppUrl] = useState('http://localhost:3000');
   const router = useRouter();
   const { t } = useLanguage();
 
   useEffect(() => {
+    loadAppUrl();
     loadCategories();
   }, []);
+
+  const loadAppUrl = async () => {
+    try {
+      const response = await fetch('/api/config');
+      if (response.ok) {
+        const data = await response.json();
+        setAppUrl(data.appUrl);
+      }
+    } catch (error) {
+      console.error('Error loading app URL:', error);
+    }
+  };
 
   const loadCategories = async () => {
     try {
@@ -346,14 +360,19 @@ if (\$service) {
 
               <div className="border-t pt-4">
                 <h4 className="text-sm font-medium text-gray-900 mb-2">{t('availableHelpers')}</h4>
-                <div className="bg-gray-50 p-3 rounded text-sm space-y-2">
+                <div className="bg-gray-50 p-3 rounded text-sm space-y-3">
+                  <div>
+                    <p className="text-gray-600 mb-1">{t('helperDomainConstant')}</p>
+                    <p className="font-mono text-blue-600 mb-1">{t('helperDomainExample', { domain: appUrl })}</p>
+                    <p className="text-xs text-gray-500 italic">{t('helperDomainUsage')}</p>
+                  </div>
                   <div>
                     <p className="text-gray-600 mb-1">{t('helperDownload')}</p>
                     <p className="font-mono text-blue-600">{t('helperDownloadExample')}</p>
                   </div>
-                  <div className="mt-3">
+                  <div>
                     <p className="text-gray-600 mb-1">{t('helperDownloadFromFiles')}</p>
-                    <p className="font-mono text-blue-600">Download-File -Url "http://localhost:3000/api/files/FILE_ID" -OutputPath "C:\myfile.exe"</p>
+                    <p className="font-mono text-blue-600">Download-File -Url "$domain/api/files/FILE_ID" -OutputPath "C:\myfile.exe"</p>
                   </div>
                 </div>
               </div>
