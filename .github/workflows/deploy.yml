@@ -35,12 +35,16 @@ jobs:
           chmod -R 755 data uploads
           chown -R 1001:1001 data uploads
 
+          # Build new containers first
+          echo "Building new containers..."
+          docker-compose build
+
           # Stop and remove old containers
           echo "Stopping old containers..."
           docker-compose down
 
-          # Build and start new containers
-          echo "Building and starting new containers..."
-          docker-compose up -d --build
+          # Start new containers
+          echo "Starting new containers..."
+          docker-compose up -d
 
           echo "Deployment completed successfully!"

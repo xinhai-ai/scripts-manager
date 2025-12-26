@@ -93,20 +93,25 @@ mkdir -p data uploads
 chmod -R 755 data uploads
 chown -R 1001:1001 data uploads
 
-# 停止旧容器
-echo ""
-echo "停止旧容器（如果存在）..."
-docker-compose down || true
-
 # 清理 Docker 构建缓存（确保使用最新代码）
 echo ""
 echo "清理 Docker 构建缓存..."
 docker builder prune -af || true
 
-# 构建并启动容器
+# 先构建新镜像
 echo ""
-echo "构建并启动容器..."
-docker-compose up -d --build --no-cache
+echo "构建新容器镜像..."
+docker-compose build
+
+# 停止旧容器
+echo ""
+echo "停止旧容器（如果存在）..."
+docker-compose down
+
+# 启动新容器
+echo ""
+echo "启动新容器..."
+docker-compose up -d
 
 # 清理旧镜像
 echo ""
