@@ -20,6 +20,28 @@
 
 ## 快速开始
 
+### 重要：Prisma 版本
+
+本项目使用 **Prisma 6.19.1**（不支持 7.x）。如果遇到 Prisma 版本问题，运行：
+
+**Windows:**
+```bash
+fix-prisma.bat
+```
+
+**Linux/Mac:**
+```bash
+chmod +x fix-prisma.sh
+./fix-prisma.sh
+```
+
+或手动执行：
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npx prisma generate
+```
+
 ### 1. 安装依赖
 
 ```bash
