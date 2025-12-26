@@ -23,16 +23,26 @@ jobs:
         script: |
           cd /opt/scripts-manager
 
-          # Pull latest code
-          git pull origin main
+          # 强制拉取最新代码，忽略本地修改
+          echo "Fetching latest code from repository..."
+          git fetch origin main
+          git reset --hard origin/main
+          git clean -fd
 
           # Stop and remove old containers
+          echo "Stopping old containers..."
           docker-compose down
 
+          # Clean Docker build cache
+          echo "Cleaning Docker build cache..."
+          docker builder prune -af || true
+
           # Build and start new containers
+          echo "Building and starting new containers..."
           docker-compose up -d --build
 
           # Clean up old images
-          docker image prune -af
+          echo "Cleaning up old Docker images..."
+          docker image prune -af || true
 
           echo "Deployment completed successfully!"
