@@ -48,5 +48,8 @@ next-env.d.ts
 
 # uploads
 /public/uploads
-app/api/files/\[id]/route.ts
 uploads/*
+
+# deployment data
+/data
+data/

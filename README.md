@@ -131,6 +131,32 @@ iex (irm http://localhost:3000/api/run/<script-id>)
 
 ## 部署
 
+详细的部署指南请查看 [DEPLOYMENT.md](./DEPLOYMENT.md)
+
+### 快速部署到自己的服务器
+
+```bash
+# 下载并运行自动部署脚本
+curl -o deploy.sh https://raw.githubusercontent.com/YOUR_USERNAME/scripts-manager/main/deploy.sh
+chmod +x deploy.sh
+sudo ./deploy.sh
+```
+
+### Docker 部署
+
+```bash
+# 克隆仓库
+git clone https://github.com/YOUR_USERNAME/scripts-manager.git
+cd scripts-manager
+
+# 配置环境变量
+cp .env.example .env
+# 编辑 .env 设置 APP_URL, ADMIN_PASSWORD 等
+
+# 启动服务
+docker-compose up -d --build
+```
+
 ### 生产环境构建
 
 ```bash
