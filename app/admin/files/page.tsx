@@ -17,11 +17,25 @@ export default function FilesPage() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
+  const [appUrl, setAppUrl] = useState('http://localhost:3000');
   const { t } = useLanguage();
 
   useEffect(() => {
     loadFiles();
+    loadAppUrl();
   }, []);
+
+  const loadAppUrl = async () => {
+    try {
+      const response = await fetch('/api/config');
+      if (response.ok) {
+        const data = await response.json();
+        setAppUrl(data.appUrl);
+      }
+    } catch {
+      // 使用默认值
+    }
+  };
 
   const loadFiles = async () => {
     try {
@@ -232,7 +246,7 @@ export default function FilesPage() {
           {t('usageInScriptsDesc')}
         </p>
         <div className="bg-white p-3 rounded text-sm font-mono text-gray-700">
-          <p className="text-blue-600">Download-File -Url "http://localhost:3000/api/files/FILE_ID" -OutputPath "C:\filename.ext"</p>
+          <p className="text-blue-600">Download-File -Url "{appUrl}/api/files/FILE_ID" -OutputPath "C:\filename.ext"</p>
         </div>
       </div>
     </div>

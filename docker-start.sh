@@ -5,13 +5,7 @@ echo "Starting Scripts Manager"
 echo "=========================================="
 echo ""
 
-# 确保数据目录有正确的权限
-echo "Setting up data directory permissions..."
-mkdir -p /app/data /app/public/uploads
-chmod -R 755 /app/data /app/public/uploads
-
 # 检查 Prisma 版本
-echo ""
 echo "Checking Prisma version..."
 npx prisma --version
 

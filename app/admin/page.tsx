@@ -267,7 +267,7 @@ export default function AdminPage() {
                   {t('quickAccessDesc')}
                 </p>
                 <code className="mt-2 block bg-white px-3 py-2 rounded border border-blue-200 text-sm font-mono text-gray-900">
-                  iex (irm {appUrl}/s)
+                  iex (irm {appUrl})
                 </code>
               </div>
               <button

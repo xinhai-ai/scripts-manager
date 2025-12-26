@@ -88,9 +88,10 @@ else
     echo ".env 文件已存在，跳过创建"
 fi
 
-# 创建数据目录
+# 创建数据目录并设置权限（UID 1001 是 Docker 容器中的 nextjs 用户）
 mkdir -p data uploads
 chmod -R 755 data uploads
+chown -R 1001:1001 data uploads
 
 # 停止旧容器
 echo ""
