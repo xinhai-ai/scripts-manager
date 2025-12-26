@@ -66,6 +66,7 @@ RUN npm install --omit=dev prisma@6.19.1
 # 修改权限
 RUN chown -R nextjs:nodejs /app
 
+# 保持 root 用户运行以确保有权限访问挂载的 volume
 USER nextjs
 
 EXPOSE 3000
