@@ -39,7 +39,11 @@ jobs:
 
           # Build and start new containers
           echo "Building and starting new containers..."
+<<<<<<< HEAD
           docker-compose up -d --build
+=======
+          docker-compose up -d --build --no-cache
+>>>>>>> 9cde3c60fc17d8345435cc44a30a839a8f9e7964
 
           # Clean up old images
           echo "Cleaning up old Docker images..."
