@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { hashPassword } from '@/lib/crypto';
 
 export default function LoginPage() {
   const [password, setPassword] = useState('');
@@ -17,10 +18,21 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // 1. 获取服务器的 salt
+      const saltResponse = await fetch('/api/auth/salt');
+      if (!saltResponse.ok) {
+        throw new Error('Failed to get salt');
+      }
+      const { salt } = await saltResponse.json();
+
+      // 2. 对密码进行加盐哈希（PBKDF2）
+      const passwordHash = await hashPassword(password, salt);
+
+      // 3. 发送哈希值到服务器进行验证
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ passwordHash }),
       });
 
       if (response.ok) {
